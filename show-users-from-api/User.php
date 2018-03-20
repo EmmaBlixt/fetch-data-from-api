@@ -9,8 +9,17 @@
 defined('ABSPATH') or die('No script kiddies please!');
 require_once 'includes/setup.php';
 
-class showUsers
+class User
 {
+  private $id;
+  private $name;
+  private $username;
+  private $email;
+  private $address;
+  private $phone;
+  private $website;
+  private $company;
+
   function __construct()
   {
     return $this->init();
@@ -37,7 +46,6 @@ class showUsers
     } catch ( Exception $ex ) {
         $data = null;
     }
-
     return $data;
   }
 
@@ -78,6 +86,21 @@ class showUsers
   }
 
   /**
+  * Set data variables for User objects
+  * @param object[] $person
+  */
+  private function set_user_values($person)
+  {
+    $this->id = $person->id;
+    $this->name = $person->name;
+    $this->username = $person->username;
+    $this->email = $person->email;
+    $this->phone = $person->phone;
+    $this->address = $person->address;
+    $this->company = $person->company;
+  }
+
+  /**
   * Fetch the user's name from the api
   * @param object[] $data
   * @return string $html to display all user data
@@ -87,11 +110,11 @@ class showUsers
     $html = '';
 
     if (null == ($json_response = $this->fetch_data())) :
-      $html .= '<h1>';
-      $html .= "Sorry, I couldn't find the api";
-      $html .= '</h1>';
+      $html .= "<h1>Sorry, I couldn't find the api</h1>";
     else :
       foreach ($json_response as $person) :
+        $user = new User();
+        $user->set_user_values($person);
         $html .= '<div class="displayed-person" style="height:340px">';
         $html .= '<div class="person-info" style="width: 300px; float: left;">';
         $html .= '<p><b>Name:</b><br>' . $person->name . '</p>';
@@ -106,14 +129,13 @@ class showUsers
         $html .= '<p><b>Website:</b><br>' . $person->website . '</p>';
         $html .= '<p><b>Company:</b><br>';
         foreach ($this->get_company($person) as $company) :
-          $html .= $company . '<br>';
+         $html .= $company . '<br>';
         endforeach;
         $html .= '</p></div></div><hr>';
       endforeach;
     endif;
-
     return $html;
   }
 }
 
-$show_users = new showUsers();
+$show_users = new User();
