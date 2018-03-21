@@ -8,7 +8,6 @@
 
 defined('ABSPATH') or die('No script kiddies please!');
 require_once 'includes/setup.php';
-include_once 'todos.php';
 
 class User
 {
@@ -175,15 +174,15 @@ class User
     else :
       foreach ($json_response as $user) :
         $this->set_user_values($user);
-        $html .= '<div class="displayed-person" style="height:340px">';
-        $html .= '<div class="person-info" style="width: 300px; float: left;">';
+        $html .= '<div class="displayed-person">';
+        $html .= '<div class="person-info">';
         $html .= '<p><b>Name:</b><br>' . $this->name . '</p>';
         $html .= '<p><b>Email:</b><br>' . $this->email . '</p>';
         $html .= '<p><b>Address:</b><br>';
         foreach ($this->get_adress($this) as $value) :
           $html .= $value . '<br>';
         endforeach;
-        $html .= '</div><div class="person-info" style="width: 360px; float: left;">';
+        $html .= '</div><div class="person-info">';
         $html .= '<p><b>Username:</b><br>' . $this->username . '</p>';
         $html .= '<p><b>Phone:</b><br>' . $this->phone . '</p>';
         $html .= '<p><b>Website:</b><br>' . $this->website . '</p>';
@@ -191,7 +190,7 @@ class User
         foreach ($this->get_company($this) as $company) :
          $html .= $company . '<br>';
         endforeach;
-        $html .= '</p></div></div><hr>';
+        $html .= '</p></div></div>';
       endforeach;
     endif;
     return $html;
@@ -199,4 +198,3 @@ class User
 }
 
 $show_users = new User();
-$show_todos = new Todo();
