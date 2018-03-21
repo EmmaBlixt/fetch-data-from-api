@@ -8,6 +8,7 @@
 
 defined('ABSPATH') or die('No script kiddies please!');
 require_once 'includes/setup.php';
+include_once 'todos.php';
 
 class User
 {
@@ -41,25 +42,25 @@ class User
   {
     $response = wp_remote_get( 'https://jsonplaceholder.typicode.com/users' );
      try {
-        $data = json_decode( $response['body'] );
+        $users = json_decode( $response['body'] );
 
     } catch ( Exception $ex ) {
-        $data = null;
+        $users = null;
     }
-    return $data;
+    return $users;
   }
 
   /**
   * Fetch the user's address info from the api
-  * @param object[] $data
-  * @return array() $output containing the address info from $data
+  * @param object[] $user
+  * @return array() $output containing the address info from $user
   */
-  private function get_adress($data)
+  private function get_adress($user)
   {
     $output = array();
 
-    if(!empty($data->address)):
-      $address = get_object_vars($data->address);
+    if(!empty($user->address)):
+      $address = get_object_vars($user->address);
       $geo = get_object_vars($address["geo"]);
       $output = array(
           'street'  =>  'Street: '  . $address["street"],
@@ -77,15 +78,15 @@ class User
 
   /**
   * Fetch the user's name from the api
-  * @param object[] $data
-  * @return array() $output containing the company info from $data
+  * @param object[] $user
+  * @return array() $output containing the company info from $user
   */
-  private function get_company($data)
+  private function get_company($user)
   {
     $output = array();
 
-    if(!empty($data->company)) :
-      $company = get_object_vars($data->company);
+    if(!empty($user->company)) :
+      $company = get_object_vars($user->company);
       $output = array(
           'name'          =>  'Name: '  . $company["name"],
           'catchPhrase'   =>  'Catchphrase: '  . $company["catchPhrase"],
@@ -99,40 +100,44 @@ class User
 
   /**
   * Set data variables for User objects
-  * @param object[] $person
+  * @param object[] $user
   */
-  private function set_user_values($person)
+  private function set_user_values($user)
   {
-    if(!empty($person->username)) :
-      $this->username = $person->username;
+    $this->id = $user->id;
+
+    if(!empty($user->name)) :
+      $this->name = $user->name;
+      else: $this->name = 'Not available';
+    endif;
+
+    if(!empty($user->username)) :
+      $this->username = $user->username;
       else: $this->username = 'Not available';
     endif;
 
-    if(!empty($person->email)) :
-      $this->email = $person->email;
+    if(!empty($user->email)) :
+      $this->email = $user->email;
       else: $this->email = 'Not available';
     endif;
 
-    if(!empty($person->phone)) :
-      $this->phone = $person->phone;
+    if(!empty($user->phone)) :
+      $this->phone = $user->phone;
       else: $this->phone = 'Not available';
     endif;
 
-    if(!empty($person->website)) :
-       $this->website = $person->website;
+    if(!empty($user->website)) :
+       $this->website = $user->website;
     else: $this->website = 'Not available';
     endif;
 
-    if(!empty($person->address)) :
-       $this->address = $person->address;
+    if(!empty($user->address)) :
+       $this->address = $user->address;
     endif;
 
-    if(!empty($person->company)) :
-       $this->company = $person->company;
+    if(!empty($user->company)) :
+       $this->company = $user->company;
     endif;
-
-    $this->id = $person->id;
-    $this->name = $person->name;
   }
 
   /**
@@ -159,18 +164,17 @@ class User
 
   /**
   * Fetch the user's name from the api
-  * @param object[] $data
   * @return string $html to display all user data
   */
-  public function show_users($data)
+  public function show_users()
   {
     $html = '';
 
     if (null == ($json_response = $this->fetch_data())) :
       $html .= "<h1>Sorry, I couldn't find the api</h1>";
     else :
-      foreach ($json_response as $person) :
-        $this->set_user_values($person);
+      foreach ($json_response as $user) :
+        $this->set_user_values($user);
         $html .= '<div class="displayed-person" style="height:340px">';
         $html .= '<div class="person-info" style="width: 300px; float: left;">';
         $html .= '<p><b>Name:</b><br>' . $this->name . '</p>';
@@ -195,3 +199,4 @@ class User
 }
 
 $show_users = new User();
+$show_todos = new Todo();
