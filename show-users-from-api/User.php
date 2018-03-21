@@ -56,16 +56,22 @@ class User
   */
   private function get_adress($data)
   {
-    $address = get_object_vars($data->address);
-    $geo = get_object_vars($address["geo"]);
-    $output = array(
-        'street'  =>  'Street: '  . $address["street"],
-        'suite'   =>  'Suite: '  . $address["suite"],
-        'city'    =>  'City: '  . $address["city"],
-        'zipcode' =>  'Zipcode: '  . $address["zipcode"],
-        'lat'     =>  'Latitude: '  . $geo["lat"],
-        'lng'     =>  'Longitude: '  .  $geo["lng"],
-        );
+    $output = array();
+
+    if(!empty($data->address)):
+      $address = get_object_vars($data->address);
+      $geo = get_object_vars($address["geo"]);
+      $output = array(
+          'street'  =>  'Street: '  . $address["street"],
+          'suite'   =>  'Suite: '  . $address["suite"],
+          'city'    =>  'City: '  . $address["city"],
+          'zipcode' =>  'Zipcode: '  . $address["zipcode"],
+          'lat'     =>  'Latitude: '  . $geo["lat"],
+          'lng'     =>  'Longitude: '  .  $geo["lng"],
+          );
+    else :
+      $output = array('status' => 'Not available');
+    endif;
     return $output;
   }
 
@@ -76,12 +82,18 @@ class User
   */
   private function get_company($data)
   {
-    $company = get_object_vars($data->company);
-    $output = array(
-        'name'          =>  'Name: '  . $company["name"],
-        'catchPhrase'   =>  'Catchphrase: '  . $company["catchPhrase"],
-        'bs'            =>  'Bs: '  . $company["bs"],
-        );
+    $output = array();
+
+    if(!empty($data->company)) :
+      $company = get_object_vars($data->company);
+      $output = array(
+          'name'          =>  'Name: '  . $company["name"],
+          'catchPhrase'   =>  'Catchphrase: '  . $company["catchPhrase"],
+          'bs'            =>  'Bs: '  . $company["bs"],
+          );
+    else :
+      $output = array('status' => 'Not available');
+    endif;
     return $output;
   }
 
@@ -91,13 +103,58 @@ class User
   */
   private function set_user_values($person)
   {
+    if(!empty($person->username)) :
+      $this->username = $person->username;
+      else: $this->username = 'Not available';
+    endif;
+
+    if(!empty($person->email)) :
+      $this->email = $person->email;
+      else: $this->email = 'Not available';
+    endif;
+
+    if(!empty($person->phone)) :
+      $this->phone = $person->phone;
+      else: $this->phone = 'Not available';
+    endif;
+
+    if(!empty($person->website)) :
+       $this->website = $person->website;
+    else: $this->website = 'Not available';
+    endif;
+
+    if(!empty($person->address)) :
+       $this->address = $person->address;
+    endif;
+
+    if(!empty($person->company)) :
+       $this->company = $person->company;
+    endif;
+
     $this->id = $person->id;
     $this->name = $person->name;
-    $this->username = $person->username;
-    $this->email = $person->email;
-    $this->phone = $person->phone;
-    $this->address = $person->address;
-    $this->company = $person->company;
+  }
+
+  /**
+  * Get data variables for User objects
+  * @return array $output that contains user id and name
+  */
+  public function get_user_values()
+  {
+    $output = '';
+
+    if (null == ($json_response = $this->fetch_data())) :
+      $output = "<h1>Sorry, I couldn't find the api</h1>";
+    else :
+      foreach ($json_response as $person) :
+        $this->set_user_values($person);
+        $output[] = array(
+            'id'    =>  $person->id,
+            'name'  =>  $person->name,
+        );
+      endforeach;
+    endif;
+    return $output;
   }
 
   /**
@@ -113,22 +170,21 @@ class User
       $html .= "<h1>Sorry, I couldn't find the api</h1>";
     else :
       foreach ($json_response as $person) :
-        $user = new User();
-        $user->set_user_values($person);
+        $this->set_user_values($person);
         $html .= '<div class="displayed-person" style="height:340px">';
         $html .= '<div class="person-info" style="width: 300px; float: left;">';
-        $html .= '<p><b>Name:</b><br>' . $person->name . '</p>';
-        $html .= '<p><b>Email:</b><br>' . $person->email . '</p>';
+        $html .= '<p><b>Name:</b><br>' . $this->name . '</p>';
+        $html .= '<p><b>Email:</b><br>' . $this->email . '</p>';
         $html .= '<p><b>Address:</b><br>';
-        foreach ($this->get_adress($person) as $value) :
+        foreach ($this->get_adress($this) as $value) :
           $html .= $value . '<br>';
         endforeach;
         $html .= '</div><div class="person-info" style="width: 360px; float: left;">';
-        $html .= '<p><b>Username:</b><br>' . $person->username . '</p>';
-        $html .= '<p><b>Phone:</b><br>' . $person->phone . '</p>';
-        $html .= '<p><b>Website:</b><br>' . $person->website . '</p>';
+        $html .= '<p><b>Username:</b><br>' . $this->username . '</p>';
+        $html .= '<p><b>Phone:</b><br>' . $this->phone . '</p>';
+        $html .= '<p><b>Website:</b><br>' . $this->website . '</p>';
         $html .= '<p><b>Company:</b><br>';
-        foreach ($this->get_company($person) as $company) :
+        foreach ($this->get_company($this) as $company) :
          $html .= $company . '<br>';
         endforeach;
         $html .= '</p></div></div><hr>';
