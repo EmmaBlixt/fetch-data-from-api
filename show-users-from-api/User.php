@@ -30,6 +30,7 @@ class User
   */
   public function init()
   {
+
     add_shortcode('display-users', array($this, 'show_users'));
   }
 
@@ -39,9 +40,9 @@ class User
   */
   private function fetch_data()
   {
+   try {
     $response = wp_remote_get( 'https://jsonplaceholder.typicode.com/users' );
-     try {
-        $users = json_decode( $response['body'] );
+    $users = json_decode( $response['body'] );
 
     } catch ( Exception $ex ) {
         $users = null;
@@ -153,8 +154,14 @@ class User
       foreach ($json_response as $person) :
         $this->set_user_values($person);
         $output[] = array(
-            'id'    =>  $person->id,
-            'name'  =>  $person->name,
+            'id'        =>  $person->id,
+            'name'      =>  $person->name,
+            'username'  =>  $person->username,
+            'email'     =>  $person->email,
+            'phone'     =>  $person->phone,
+            'address'   =>  $this->get_adress($person),
+            'website'   =>  $person->website,
+            'company'   =>  $this->get_company($person),
         );
       endforeach;
     endif;
@@ -162,38 +169,11 @@ class User
   }
 
   /**
-  * Fetch the user's name from the api
-  * @return string $html to display all user data
+  * Fetch the template that displays all the user data
   */
   public function show_users()
   {
-    $html = '';
-
-    if (null == ($json_response = $this->fetch_data())) :
-      $html .= "<h1>Sorry, I couldn't find the api</h1>";
-    else :
-      foreach ($json_response as $user) :
-        $this->set_user_values($user);
-        $html .= '<div class="displayed-person">';
-        $html .= '<div class="person-info">';
-        $html .= '<p><b>Name:</b><br>' . $this->name . '</p>';
-        $html .= '<p><b>Email:</b><br>' . $this->email . '</p>';
-        $html .= '<p><b>Address:</b><br>';
-        foreach ($this->get_adress($this) as $value) :
-          $html .= $value . '<br>';
-        endforeach;
-        $html .= '</div><div class="person-info">';
-        $html .= '<p><b>Username:</b><br>' . $this->username . '</p>';
-        $html .= '<p><b>Phone:</b><br>' . $this->phone . '</p>';
-        $html .= '<p><b>Website:</b><br>' . $this->website . '</p>';
-        $html .= '<p><b>Company:</b><br>';
-        foreach ($this->get_company($this) as $company) :
-         $html .= $company . '<br>';
-        endforeach;
-        $html .= '</p></div></div>';
-      endforeach;
-    endif;
-    return $html;
+    display_users_template('show-users.php');
   }
 }
 
