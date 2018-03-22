@@ -8,6 +8,7 @@
 
 defined('ABSPATH') or die('No script kiddies please!');
 require_once 'includes/setup.php';
+include_once 'todo.php';
 
 class User
 {
@@ -142,12 +143,11 @@ class User
 
   /**
   * Get data variables for User objects
-  * @return array $output that contains user id and name
+  * @return array $output that contains user information
   */
   public function get_user_values()
   {
     $output = '';
-
     if (null == ($json_response = $this->fetch_data())) :
       $output = "<h1>Sorry, I couldn't find the api</h1>";
     else :
@@ -173,7 +173,7 @@ class User
   */
   public function show_users()
   {
-    display_users_template('show-users.php');
+    display_template('show-users.php');
   }
 }
 

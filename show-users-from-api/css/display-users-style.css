@@ -1,0 +1,21 @@
+div.displayed-person {
+  height: 340px;
+  border-bottom: 1px solid #000;
+  margin-top: 30px;
+}
+
+div.person-info {
+  width: 300px;
+  display: inline-block;
+  float: left;
+}
+
+div.displayed-todo {
+  border-right: 1px solid #f0f0f0;
+  height: 150px;
+  width: 350px;
+  float: right;
+  padding-left: 20px;
+  border-bottom: 1px solid #000;
+  margin-top: 20px;
+}

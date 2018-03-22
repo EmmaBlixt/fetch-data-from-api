@@ -15,9 +15,9 @@ add_action('wp_enqueue_scripts','register_user_styles');
 /**
 * Find and call plugin page template
 */
-function display_users_template( $template) {
+function display_template($template) {
 
-    $file_name = 'show-users.php';
+    $file_name = $template;
 
     if ( locate_template( $file_name ) ) :
       $template = locate_template( $file_name );
