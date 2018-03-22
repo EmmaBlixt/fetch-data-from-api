@@ -9,6 +9,7 @@
 defined('ABSPATH') or die('No script kiddies please!');
 require_once 'includes/setup.php';
 include_once 'todo.php';
+include_once 'epicpicture.php';
 
 class User
 {
