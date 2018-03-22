@@ -19,3 +19,21 @@ div.displayed-todo {
   border-bottom: 1px solid #000;
   margin-top: 20px;
 }
+
+.image-container {
+  height: 300px;
+  margin: auto;
+  width: 635px;
+}
+
+.single-image {
+  width: 200px;
+  height: 200px;
+}
+
+.single-image-wrapper {
+  width: 200px;
+  float: left;
+  margin: 5px;
+  display: inline-block;
+}
