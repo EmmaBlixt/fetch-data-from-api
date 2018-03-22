@@ -1,11 +1,10 @@
 <?php
 /*
-* Template Name: Show Users
+* This is the template to display users
 */
 $users = new User();
 $html = '';
 foreach ($users->get_user_values() as $user) :
-
   $html .= '<div class="displayed-person">';
   $html .= '<div class="person-info">';
   $html .= '<p><b>Name:</b><br>' . $user['name'] . '</p>';
@@ -24,4 +23,5 @@ foreach ($users->get_user_values() as $user) :
   endforeach;
   $html .= '</p></div></div>';
 endforeach;
+
 echo $html;
