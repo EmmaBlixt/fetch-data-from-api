@@ -84,10 +84,10 @@ class Todo extends User
     else :
       foreach ($json_response as $todo) :
           $output[] = array(
-              'id'      =>  $todo->id,
-              'title'   =>  $todo->title,
-              'user_id' =>  $todo->userId,
-              'status'  =>  $this->get_todo_status($todo),
+              'id'        =>  $todo->id,
+              'title'     =>  $todo->title,
+              'user_id'   =>  $todo->userId,
+              'status'    =>  $this->get_todo_status($todo),
               'user_name' => $this->get_user_name($user, $todo)
           );
       endforeach;

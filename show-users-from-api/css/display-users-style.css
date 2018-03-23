@@ -37,3 +37,14 @@ div.displayed-todo {
   margin: 5px;
   display: inline-block;
 }
+
+div.album-container {
+  border-bottom: 1px solid #f0f0f0;
+  padding-top: 15px;
+  height: 400px;
+}
+
+.album-info {
+  width: 84%;
+  margin: auto;
+}
