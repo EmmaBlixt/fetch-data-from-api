@@ -1,6 +1,6 @@
 <?php
 /*
-* This is the template to display images without adding a gallery
+* This is the template to display images in galleries
 */
 $i = 0;
 $album_count = 0;
