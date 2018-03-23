@@ -1,7 +1,8 @@
 <?php
 defined('ABSPATH') or die('No script kiddies please!');
+include_once 'epicalbum.php';
 
-class EpicPicture
+class EpicPicture extends EpicAlbum
 {
   private $album_id;
   private $id;
@@ -24,7 +25,7 @@ class EpicPicture
 
   /**
   * Fetch data from the api
-  * @return object $images that contains all the user information
+  * @return object $images that contains all the image information
   */
   private function fetch_image_data()
   {
@@ -79,7 +80,7 @@ class EpicPicture
   */
   public function show_pictures()
   {
-    display_template('image-without-gallery.php');
+    display_template('show-image-gallery.php');
   }
 }
 
