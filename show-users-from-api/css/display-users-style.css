@@ -1,16 +1,25 @@
-div.displayed-person {
+.displayed-person {
   height: 340px;
-  border-bottom: 1px solid #000;
   margin-top: 30px;
 }
 
-div.person-info {
+.person-info {
   width: 300px;
   display: inline-block;
   float: left;
 }
 
-div.displayed-todo {
+.made-by-user-content {
+  border-bottom: 1px solid #000;
+  height: 130px;
+}
+
+.user-contribution {
+  width: 300px;
+  float: left;
+}
+
+.displayed-todo {
   border-right: 1px solid #f0f0f0;
   height: 150px;
   width: 350px;
@@ -18,6 +27,14 @@ div.displayed-todo {
   padding-left: 20px;
   border-bottom: 1px solid #000;
   margin-top: 20px;
+}
+
+.uncompleted-todo {
+  color: #DD4040;
+}
+
+.completed-todo {
+  color: #81C13D;
 }
 
 .image-container {
@@ -47,4 +64,40 @@ div.album-container {
 .album-info {
   width: 84%;
   margin: auto;
+}
+
+.epic-post-container {
+  border-bottom: 1px solid #f0f0f0;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+}
+
+.epic-post-title {
+  margin-bottom: 5px;
+  font-weight: 600;
+}
+
+.epic-comment-container {
+  border-bottom: 1px solid #000;
+  margin-bottom: 20px;
+}
+
+.epic-post-container p {
+  margin-bottom: 5px;
+}
+
+.epic-comment-content {
+  width: 90%;
+  border-bottom: 1px solid #f0f0f0;
+  margin: auto;
+  margin-bottom: 20px;
+}
+
+.epic-comment-content:last-child {
+  border-bottom: none;
+}
+
+.epic-comment-email {
+  margin-bottom: 5px;
+  font-style: italic;
 }
