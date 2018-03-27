@@ -6,7 +6,6 @@ class EpicAlbum extends User
   private $user_id;
   private $id;
   private $title;
-  private $user_name;
 
   /**
   * Fetch data from the api
@@ -22,22 +21,6 @@ class EpicAlbum extends User
         $albums = null;
     }
     return $albums;
-  }
-
-  /**
-  * Fetch the username from the album's user id
-  * @param object $user, object $album
-  * @return  string $output containing the user's name
-  */
-  private function get_album_username($user, $album)
-  {
-    $output = '';
-    foreach ($user as $person) {
-      if ($person['id'] === $album->userId) {
-         $output = $person['name'];
-      }
-    }
-    return $output;
   }
 
   /**
@@ -57,8 +40,6 @@ class EpicAlbum extends User
   */
   public function get_album_data()
   {
-    $users = new User();
-    $user = $users->get_user_values();
     $output = '';
 
     if (null == ($json_response = $this->fetch_album_data())) :
@@ -70,7 +51,6 @@ class EpicAlbum extends User
             'id'       =>  $album->id,
             'user_id'  =>  $album->userId,
             'title'    =>  $album->title,
-            'user_name' => $this->get_album_username($user, $album)
         );
       endforeach;
     endif;
