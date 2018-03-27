@@ -1,19 +1,25 @@
 <?php
 /*
-* This is the template to display posts
+* This is the template to display posts & their comments
 */
 
 $epic_comments = new EpicComment();
 $epic_posts = new EpicPost();
+$users = new User();
 $html = '';
 $post_count = 0;
 $i = 0;
 
 foreach ($epic_posts->get_post_data() as $epic_post) :
+  foreach ($users->get_user_values() as $user) :
+    if ($user['id'] === $epic_post['user_id']) :
+       $username = $user['name'];
+    endif;
+  endforeach;
   $post_count++;
   $html .= '<div class="epic-post-container">';
   $html .= '<h4 class="epic-post-title">' . ucfirst($epic_post['title']) . '</h4>';
-  $html .= '<p><b>Written by:</b> ' . $epic_post['username'] . '</p>';
+  $html .= '<p><b>Written by:</b> ' . $username . '</p>';
   $html .= '<p>' . ucfirst($epic_post['content']) . '</p>';
   $html .= '</div>';
   $html .= '<div class="epic-comment-container">';
@@ -38,6 +44,5 @@ foreach ($epic_posts->get_post_data() as $epic_post) :
     break;
   endif;
 endforeach;
-
 
 echo $html;

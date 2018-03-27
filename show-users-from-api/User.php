@@ -33,13 +33,12 @@ class User
   */
   public function init()
   {
-
     add_shortcode('display-users', array($this, 'show_users'));
   }
 
   /**
   * Fetch data from the api
-  * @return object $data that contains all the user information
+  * @return object $users that contains all the user information
   */
   private function fetch_data()
   {
@@ -153,17 +152,17 @@ class User
     if (null == ($json_response = $this->fetch_data())) :
       $output = "<h1>Sorry, I couldn't find the api</h1>";
     else :
-      foreach ($json_response as $person) :
-        $this->set_user_values($person);
+      foreach ($json_response as $user) :
+        $this->set_user_values($user);
         $output[] = array(
-            'id'        =>  $person->id,
-            'name'      =>  $person->name,
-            'username'  =>  $person->username,
-            'email'     =>  $person->email,
-            'phone'     =>  $person->phone,
-            'address'   =>  $this->get_adress($person),
-            'website'   =>  $person->website,
-            'company'   =>  $this->get_company($person),
+            'id'           =>  $user->id,
+            'name'         =>  $user->name,
+            'username'     =>  $user->username,
+            'email'        =>  $user->email,
+            'phone'        =>  $user->phone,
+            'address'      =>  $this->get_adress($user),
+            'website'      =>  $user->website,
+            'company'      =>  $this->get_company($user)
         );
       endforeach;
     endif;
